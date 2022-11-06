@@ -22,6 +22,16 @@ def save_product(request, product):
         # save others as well
 
 
+class UpdateProduct(generic.UpdateView):
+    model = Product
+    template_name = 'products/update_product.html'
+    fields = [
+        "title",
+        "description"
+    ]
+    success_url = "/"
+
+
 class ProductListView(generic.ListView):
     template_name = 'products/list.html'
     paginate_by = 2
