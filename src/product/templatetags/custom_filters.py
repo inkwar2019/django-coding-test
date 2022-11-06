@@ -37,6 +37,11 @@ def total_product():
     return Product.objects.all().count()
 
 
+@register.simple_tag(name='total_variant')
+def total_variant():
+    return ProductVariant.objects.all().values(id=F('id'), name=F('variant_title'))
+
+
 #filters
 register.filter('min_id', min_id)
 register.filter('max_id', max_id)

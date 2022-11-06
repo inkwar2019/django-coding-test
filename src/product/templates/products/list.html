@@ -11,15 +11,30 @@
 
 
     <div class="card">
-        <form action="" method="get" class="card-header">
+        <form action="/product/list/" method="get" class="card-header">
+            {% csrf_token %}
             <div class="form-row justify-content-between">
                 <div class="col-md-2">
                     <input type="text" name="title" placeholder="Product Title" class="form-control">
                 </div>
                 <div class="col-md-2">
                     <select name="variant" id="" class="form-control">
-                        <option selected disabled>--Select A Variant--</option>
-
+                        <option selected value="">--Select A Variant--</option>
+                        <optgroup label="Colors">
+                            {% for variant in variant2 %}
+                                <option value="{{ variant.variant_id }}">{{ variant.name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="Sizes">
+                            {% for variant in variant1 %}
+                                <option value="{{ variant.variant_id }}">{{ variant.name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="Styles">
+                            {% for variant in variant3 %}
+                                <option value="{{ variant.variant_id }}">{{ variant.name }}</option>
+                            {% endfor %}
+                        </optgroup>
                     </select>
                 </div>
 
@@ -61,7 +76,7 @@
                         <td>{{ product.title }} <br> {{ product.created_at }}</td>
                         <td>{{ product.description }}</td>
                         <td>
-                            <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
+                            <dl class="row mb-0" style="height: 80px; overflow: hidden" id="{{ product.id }}">
                                 {% for variant in product|get_variants %}
                                     <dt class="col-sm-3 pb-0">
                                         {{ variant.v }}
@@ -74,7 +89,7 @@
                                     </dd>
                                 {% endfor %}
                             </dl>
-                            <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
+                            <button onclick="$('#{{ product.id }}').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
                             </button>
                         </td>
                         <td>
@@ -93,7 +108,7 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-4">
-                    <p>Showing {{ page_obj|min_id }} to {{ page_obj|max_id }} out of {% total_product %}</p>
+                    <p>Showing {{ page_obj|min_id }} to {{ page_obj|max_id }} out of {{ totals }}</p>
                 </div>
                 <div class="col-md-4">
                     <div class="pagination">
