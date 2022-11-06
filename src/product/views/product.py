@@ -2,7 +2,7 @@ from django.views import generic
 
 from product.models import Variant, Product,ProductVariant, ProductVariantPrice
 from django.db.models import F, Q
-
+from datetime import datetime
 
 class CreateProductView(generic.TemplateView):
     template_name = 'products/create.html'
@@ -13,6 +13,13 @@ class CreateProductView(generic.TemplateView):
         context['product'] = True
         context['variants'] = list(variants.all())
         return context
+
+
+def save_product(request, product):
+    if request.method == "POST":
+        prod = Product(title=product["title"], sku=product["sku"], description=product["description"], created_at=datetime.now())
+        prod.save()
+        # save others as well
 
 
 class ProductListView(generic.ListView):
